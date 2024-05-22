@@ -21,12 +21,38 @@ describe('PostsService', () => {
 
     it('should return all posts if called without options', () => {
       // реализуйте тест-кейс
+      const result = postsService.findMany();
+
+      expect(result.map(({ text }) => ({ text }))).toEqual(posts);
     });
 
     it('should return correct posts for skip and limit options', () => {
       // реализуйте тест-кейс
+      const result = postsService.findMany({ skip: 1, limit: 2});
+
+      expect(result.map(({ text }) => ({ text }))).toEqual(posts.slice(1, 3));
     });
 
     // реализуйте недостающие тест-кейсы
+    it('should return last posts if skip is equal -1', () => {
+      const result = postsService.findMany({ skip: -1 });
+
+      expect(result.map(({ text }) => ({ text }))).toEqual(posts.slice(-1));
+    });
+
+    // реализуйте недостающие тест-кейсы
+    it('should return empty array if skip is equal to posts total count', () => {
+      // реализуйте тест-кейс
+      const result = postsService.findMany({ skip: posts.length });
+
+      expect(result.map(({ text }) => ({ text }))).toEqual([]);
+    });
+
+    // реализуйте недостающие тест-кейсы
+    it('should return cutted posts if limit is less than 0', () => {
+      const result = postsService.findMany({ limit: -1 });
+
+      expect(result.map(({ text }) => ({ text }))).toEqual(posts.slice(0, -1));
+    });
   });
 });
